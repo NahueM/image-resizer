@@ -7,6 +7,7 @@ const isMac = process.platform === 'darwin'
 
 
 let mainWindow
+let aboutWindow
 
 function createMainWindow () {
      mainWindow = new BrowserWindow({
@@ -20,9 +21,20 @@ function createMainWindow () {
     mainWindow.loadFile('./app/index.html')
 }
 
+function createAboutWindow () {
+  aboutWindow = new BrowserWindow({
+     title: 'ImageResizer',
+     width: 300,
+     height: 300,
+     icon: `${__dirname}/assets/icons/Icon_256x256.png`,
+     resizable: false
+ })
+
+ aboutWindow.loadFile('./app/about.html')
+}
+
 app.on('ready', ()=> {
   createMainWindow()
-
   const mainMenu = Menu.buildFromTemplate(menu)
   Menu.setApplicationMenu(mainMenu)
   mainWindow.on('closed', () => mainWindow = null)
@@ -30,16 +42,40 @@ app.on('ready', ()=> {
 
 const menu = [
   // on mack custom menu not shown
-  ...(isMac ? [{role:'appMenu'}]: []),
-  {
-    label:'File',
-    submenu: [
+  ...(isMac ? [{
+    label: app.name,
+    submenu:[
       {
-        label:'quit',
-        click: () => app.quit()
+        label:'About',
+        click: createAboutWindow,
       }
     ]
-  }
+  }]: []),
+  {
+    role: 'fileMenu',
+  },
+  ...(!isMac ? [
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label:'About',
+          click: createAboutWindow,
+        }
+      ]
+    }
+  ]: []),
+  ...(isDev ? [
+    {
+      label:'Developer',
+      submenu: [
+        {role: 'reload'},
+        {role: 'forcereload'},
+        {type: 'separator'},
+        {role: 'toggledevtools'},
+      ]
+    }
+  ]: [])
 ]
 
 //with this you only kill the proces with comand + q
