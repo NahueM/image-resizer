@@ -1,0 +1,16 @@
+{
+  "name": "image-resizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "nodemon --exec electron ."
+  },
+  "author": "Nahuel maya",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "11.2.1",
+    "nodemon": "2.0.7"
+  }
+}
